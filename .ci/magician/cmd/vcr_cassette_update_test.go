@@ -4,8 +4,6 @@ import (
 	"container/list"
 	"fmt"
 	"magician/source"
-	"os"
-	"path/filepath"
 	"strings"
 	"testing"
 
@@ -417,61 +415,6 @@ func TestExecVCRCassetteUpdate(t *testing.T) {
 						}
 					}
 				}
-			}
-		})
-	}
-}
-
-func TestIsEmpty(t *testing.T) {
-	tmpDir := t.TempDir()
-	dirPath1, err := os.MkdirTemp(tmpDir, "test")
-	if err != nil {
-		t.Fatal(err)
-	}
-	dirPath2, err := os.MkdirTemp(tmpDir, "test")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	_, err = os.Create(filepath.Join(dirPath1, "test.log"))
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tests := []struct {
-		name     string
-		filePath string
-		want     bool
-	}{
-		{
-			name:     "exist file",
-			filePath: filepath.Join(dirPath1, "test.log"),
-			want:     false,
-		},
-		{
-			name:     "non-empty folder",
-			filePath: dirPath1,
-			want:     false,
-		},
-		{
-			name:     "non-exist file",
-			filePath: filepath.Join(dirPath2, "test.log"),
-			want:     true,
-		},
-		{
-			name:     "empty folder",
-			filePath: dirPath2,
-			want:     true,
-		},
-	}
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			got, err := isEmpty(test.filePath)
-			if err != nil {
-				t.Fatal(err)
-			}
-			if got != test.want {
-				t.Errorf("isEmpty(%s) = %v, want %v", test.filePath, got, test.want)
 			}
 		})
 	}
