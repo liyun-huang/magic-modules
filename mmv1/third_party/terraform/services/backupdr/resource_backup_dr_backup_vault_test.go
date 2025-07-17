@@ -34,7 +34,7 @@ func TestAccBackupDRBackupVault_fullUpdate(t *testing.T) {
 				ResourceName:            "google_backup_dr_backup_vault.backup-vault-test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"allow_missing", "annotations", "backup_vault_id", "force_delete", "force_update", "ignore_backup_plan_references", "ignore_inactive_datasources", "access_restriction", "labels", "location", "terraform_labels"},
+				ImportStateVerifyIgnore: []string{"allow_missing", "annotations", "backup_vault_id", "force_delete", "force_update", "ignore_backup_plan_references", "ignore_inactive_datasources", "backup_retention_inheritance", "access_restriction", "labels", "location", "terraform_labels"},
 			},
 			{
 				Config: testAccBackupDRBackupVault_fullUpdate(context),
@@ -43,7 +43,7 @@ func TestAccBackupDRBackupVault_fullUpdate(t *testing.T) {
 				ResourceName:            "google_backup_dr_backup_vault.backup-vault-test",
 				ImportState:             true,
 				ImportStateVerify:       true,
-				ImportStateVerifyIgnore: []string{"allow_missing", "annotations", "backup_vault_id", "force_delete", "force_update", "ignore_backup_plan_references", "ignore_inactive_datasources", "access_restriction", "labels", "location", "terraform_labels"},
+				ImportStateVerifyIgnore: []string{"allow_missing", "annotations", "backup_vault_id", "force_delete", "force_update", "ignore_backup_plan_references", "ignore_inactive_datasources", "backup_retention_inheritance", "access_restriction", "labels", "location", "terraform_labels"},
 			},
 		},
 	})
@@ -56,6 +56,7 @@ resource "google_backup_dr_backup_vault" "backup-vault-test" {
   backup_vault_id    = "tf-test-backup-vault-test%{random_suffix}"
   description = "This is a backup vault built by Terraform."
   backup_minimum_enforced_retention_duration = "100000s"
+  backup_retention_inheritance = 'MATCH_BACKUP_EXPIRE_TIME'
   effective_time = "%{effective_time}" 
   labels = {
     foo = "bar"
@@ -90,6 +91,7 @@ resource "google_backup_dr_backup_vault" "backup-vault-test" {
     annotations1 = "bar1"
 	annotations2 = "baz1"
   }
+  backup_retention_inheritance = 'MATCH_BACKUP_EXPIRE_TIME'
   force_update = "true"
   access_restriction = "WITHIN_ORGANIZATION"
   ignore_inactive_datasources = "true"
